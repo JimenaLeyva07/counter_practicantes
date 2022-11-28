@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:practicantes_counter/ui/widgets/counter_state_notifier.dart';
 
+import 'ui/widgets/counter_change_notifier.dart';
 import 'ui/widgets/pages/my_homepage.dart';
 
 final counterState = StateNotifierProvider((ref) => CounterStateNotifier(0));
+
+final counterChange = ChangeNotifierProvider((ref) => CounterChangeNotifier());
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));

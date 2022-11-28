@@ -15,8 +15,9 @@ class MyAppbarWidget extends ConsumerWidget with PreferredSizeWidget {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         final appbarCounter = ref.watch(counterState);
+        final appbarChange = ref.watch(counterChange).counterController.counter;
         return AppBar(
-          title: Text('$title - $appbarCounter'),
+          title: Text('$title - $appbarCounter - $appbarChange'),
         );
       },
     );

@@ -38,6 +38,7 @@ class CounterIncrementWidget extends ConsumerWidget {
     return FloatingActionButton(
       onPressed: () {
         ref.read(counterState.notifier).incrementCounter();
+        ref.read(counterChange.notifier).incrementCounter();
       },
       tooltip: 'Increment',
       child: const Icon(Icons.add),
@@ -54,8 +55,9 @@ class CounterDisplayWidget extends ConsumerWidget {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         final counterWatch = ref.watch(counterState);
+        final changeWatch = ref.watch(counterChange).counterController.counter;
         return Text(
-          '$counterWatch',
+          '$counterWatch - $changeWatch',
           style: Theme.of(context).textTheme.headlineLarge,
         );
       },

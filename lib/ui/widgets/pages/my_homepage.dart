@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:practicantes_counter/controllers/counter_controller.dart';
 import 'package:practicantes_counter/models/model_counter.dart';
+import 'package:practicantes_counter/ui/widgets/counter_inherited_widget.dart';
 
 import '../my_appbar_widget.dart';
 
@@ -23,36 +22,64 @@ class _MyHomePageState extends State<MyHomePage> {
     counterController = CounterController(modelCounter: ModelCounter());
   }
 
-  void _incrementCounter() {
+  void incrementCounter() {
     setState(() {
-      counterController
-          .incrementCounter(counterController.modelCounter.counter + 1);
+      counterController.incrementCounter(counterController.counter + 1);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const MyAppbarWidget(title: "Counter Demo"),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '${counterController.modelCounter.counter}',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+    return CounterInheritedWidget(
+      counterController: counterController,
+      function: incrementCounter,
+      counter: counterController.counter,
+      child: Scaffold(
+        appBar: const MyAppbarWidget(title: "Counter Demo"),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const <Widget>[
+              Text(
+                'You have pushed the button this many times:',
+              ),
+              CounterDisplayWidget(),
+            ],
+          ),
         ),
+        floatingActionButton: const CounterIncrementWidget(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+    );
+  }
+}
+
+class CounterIncrementWidget extends StatelessWidget {
+  const CounterIncrementWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        CounterInheritedWidget.of(context).function();
+      },
+      tooltip: 'Increment',
+      child: const Icon(Icons.add),
+    );
+  }
+}
+
+class CounterDisplayWidget extends StatelessWidget {
+  const CounterDisplayWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '${CounterInheritedWidget.of(context).counterController.counter}',
+      style: Theme.of(context).textTheme.headline4,
     );
   }
 }

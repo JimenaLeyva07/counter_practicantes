@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practicantes_counter/ui/widgets/counter_inherited_widget.dart';
 
 class MyAppbarWidget extends StatelessWidget with PreferredSizeWidget {
   const MyAppbarWidget({
@@ -11,7 +12,7 @@ class MyAppbarWidget extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      title: Text('$title - ${CounterInheritedWidget.of(context).counter}'),
     );
   }
 

@@ -9,5 +9,5 @@ class CounterController {
     modelCounter.setCounter(counter);
   }
 
-  void get counter => modelCounter.counter;
+  int get counter => modelCounter.counter;
 }

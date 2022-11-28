@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:practicantes_counter/ui/widgets/counter_state_notifier.dart';
 
 import 'ui/widgets/pages/my_homepage.dart';
 
+final counterState = StateNotifierProvider((ref) => CounterStateNotifier(0));
+
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

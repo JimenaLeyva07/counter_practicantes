@@ -1,68 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:practicantes_counter/controllers/counter_controller.dart';
-import 'package:practicantes_counter/models/model_counter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:practicantes_counter/main.dart';
 import 'package:practicantes_counter/ui/widgets/counter_inherited_widget.dart';
 
 import '../my_appbar_widget.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  late CounterController counterController;
-
-  @override
-  void initState() {
-    super.initState();
-    counterController = CounterController(modelCounter: ModelCounter());
-  }
-
-  void incrementCounter() {
-    setState(() {
-      counterController.incrementCounter(counterController.counter + 1);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return CounterInheritedWidget(
-      counterController: counterController,
-      function: incrementCounter,
-      counter: counterController.counter,
-      child: Scaffold(
-        appBar: const MyAppbarWidget(title: "Counter Demo"),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const <Widget>[
-              Text(
-                'You have pushed the button this many times:',
-              ),
-              CounterDisplayWidget(),
-            ],
-          ),
+    return Scaffold(
+      appBar: const MyAppbarWidget(title: "Counter Demo"),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            CounterDisplayWidget(),
+          ],
         ),
-        floatingActionButton: const CounterIncrementWidget(),
       ),
+      floatingActionButton: const CounterIncrementWidget(),
     );
   }
 }
 
-class CounterIncrementWidget extends StatelessWidget {
+class CounterIncrementWidget extends ConsumerWidget {
   const CounterIncrementWidget({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
       onPressed: () {
-        CounterInheritedWidget.of(context).function();
+        ref.read(counterState.notifier).incrementCounter();
       },
       tooltip: 'Increment',
       child: const Icon(Icons.add),
@@ -70,16 +46,20 @@ class CounterIncrementWidget extends StatelessWidget {
   }
 }
 
-class CounterDisplayWidget extends StatelessWidget {
+class CounterDisplayWidget extends ConsumerWidget {
   const CounterDisplayWidget({
     Key? key,
   }) : super(key: key);
-
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      '${CounterInheritedWidget.of(context).counterController.counter}',
-      style: Theme.of(context).textTheme.headline4,
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Consumer(
+      builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        final counterWatch = ref.watch(counterState);
+        return Text(
+          '$counterWatch',
+          style: Theme.of(context).textTheme.headlineLarge,
+        );
+      },
     );
   }
 }

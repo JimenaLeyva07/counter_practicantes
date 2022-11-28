@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:practicantes_counter/main.dart';
-import 'package:practicantes_counter/ui/widgets/counter_inherited_widget.dart';
 
 import '../my_appbar_widget.dart';
 
